@@ -32,6 +32,8 @@ echo Revision id................... : $BUILD_VERSION
 echo
 echo Testing Options:
 echo '  'Number of tuples............ : $n_tuples
+echo
+echo Optional Libraries:
 if test "x$HAVE_EIGEN" = "x1"; then
   echo '  'Eigen....................... : yes
 else
