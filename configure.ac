@@ -124,6 +124,21 @@ if (test x$HAVE_GRVY = x1); then
   antioch_optional_test_LIBS="$GRVY_LIBS $antioch_optional_test_LIBS"
 fi
 
+dnl Use Boost.ODEInt if it is found
+BOOST_REQUIRE([1.53.0], [AC_MSG_WARN([Could not find suitable Boost installation.])] )
+
+BOOST_FIND_HEADER( [boost/numeric/odeint.hpp],
+                   [ AC_MSG_WARN([Could not find Boost.ODEInt])
+                     HAVE_BOOST_ODEINT=0 ],
+                   [ AC_DEFINE([HAVE_BOOST_ODEINT], [1], [Found Boost.ODEInt])
+                     AC_SUBST([HAVE_BOOST_ODEINT])
+                     HAVE_BOOST_ODEINT=1 ] 
+                  )
+
+if (test x$HAVE_BOOST_ODEINT = x1); then
+  antioch_optional_test_INCLUDES="$BOOST_CPPFLAGS $antioch_optional_test_INCLUDES"
+fi
+
 AC_SUBST(antioch_optional_INCLUDES)
 AC_SUBST(antioch_optional_test_INCLUDES)
 AC_SUBST(antioch_optional_test_LDFLAGS)

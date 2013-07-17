@@ -74,6 +74,14 @@ if test "x$HAVE_GRVY" = "x1"; then
 else
   echo '  'GRVY........................ : no
 fi
+dnl
+if test "x$HAVE_BOOST_ODEINT" = "x1"; then
+  echo '  'BoostODEInt................. : yes
+  echo '    'BOOST_CPPFLAGS............ : $BOOST_CPPFLAGS
+else
+  echo '  'BoostODEInt................. : no
+fi
+dnl
 echo
 echo '-------------------------------------------------------------------------------'
 
