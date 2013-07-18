@@ -37,6 +37,7 @@
 #include "antioch/reaction_set.h"
 #include "antioch/read_reaction_set_data_xml.h"
 #include "antioch/cea_mixture.h"
+#include "antioch/cea_mixture_ascii_parsing.h"
 #include "antioch/stirred_reactor_enum.h"
 #include "antioch/isothermal_stirred_reactor.h"
 #include "antioch/boost_ode_integrator.h"
@@ -60,6 +61,7 @@ int tester(const std::string& input_name)
   Antioch::ReactionSet<Scalar> reaction_set( chem_mixture );
   Antioch::CEAThermoMixture<Scalar> thermo( chem_mixture );
 
+  Antioch::read_cea_mixture_data_ascii_default( thermo );
   Antioch::read_reaction_set_data_xml<Scalar>( input_name, false, reaction_set );
 
   const Scalar T = 500;
@@ -74,7 +76,7 @@ int tester(const std::string& input_name)
   x0[2] = 0.5;
   x0[3] = 0.5;
 
-  reactor.run( x0, 0.0, 1.0, 0.01 );
+  reactor.run( x0, 0.0, 10.0, 0.0001 );
 
   return return_flag;
 }
