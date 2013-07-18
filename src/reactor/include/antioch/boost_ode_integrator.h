@@ -24,6 +24,19 @@
 #ifndef ANTIOCH_BOOST_ODE_INTEGRATOR_H
 #define ANTIOCH_BOOST_ODE_INTEGRATOR_H
 
+#include "antioch_config.h"
+
+#ifdef ANTIOCH_HAVE_BOOST_ODEINT
+
+// Boost
+#include "boost/numeric/odeint.hpp"
+
+// Antioch
+#include "antioch/antioch_asserts.h"
+#include "antioch/stirred_reactor_enum.h"
+#include "antioch/stirred_reactor_base.h"
+#include "antioch/stirred_reactor_time_integrator_base.h"
+
 namespace Antioch
 {
 
@@ -118,5 +131,7 @@ namespace Antioch
   }
 
 } // end namespace Antioch
+
+#endif // ANTIOCH_HAVE_BOOST_ODEINT
 
 #endif // ANTIOCH_BOOST_ODE_INTEGRATOR_H
