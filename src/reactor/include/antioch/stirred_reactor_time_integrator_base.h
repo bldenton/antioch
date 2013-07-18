@@ -29,11 +29,13 @@
 
 namespace Antioch
 {
+  // Foward declarations
+  template<typename CoeffType, typename StateType>
+  class BoostODEIntergrator;
 
   template<typename CoeffType=double, typename StateType=CoeffType>
   class StirredReactorTimeIntegratorBase
   {
-
   public:
 
     StirredReactorTimeIntegratorBase();
