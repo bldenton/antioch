@@ -121,7 +121,7 @@ namespace Antioch
 
     switch( _stepper_type )
       {
-      case( BoostStepperType::RUNGE_KUTTA_FOURTH ):
+      case( BoostStepperType::RUNGE_KUTTA_4 ):
         {
           boost::numeric::odeint::runge_kutta4<VectorStateType> stepper;
 
@@ -132,6 +132,28 @@ namespace Antioch
       case( BoostStepperType::RUNGE_KUTTA_CASH_KARP_54 ):
         {
           typedef boost::numeric::odeint::runge_kutta_cash_karp54<VectorStateType> stepper_type;
+
+          // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
+          boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
+          
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+        }
+        break;
+
+      case( BoostStepperType::RUNGE_KUTTA_DORMAND_PRINCE_5 ):
+        {
+          typedef boost::numeric::odeint::runge_kutta_dopri5<VectorStateType> stepper_type;
+
+          // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
+          boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
+          
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+        }
+        break;
+
+      case( BoostStepperType::RUNGE_KUTTA_FEHLBERG_78 ):
+        {
+          typedef boost::numeric::odeint::runge_kutta_fehlberg78<VectorStateType> stepper_type;
 
           // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
           boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
