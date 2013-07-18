@@ -68,7 +68,10 @@ int tester(const std::string& input_name)
 
   int return_flag = 0;
 
-  Antioch::BoostODEIntegrator<Scalar,Scalar> integrator( Antioch::BoostStepperType::RUNGE_KUTTA_FOURTH );
+  //Antioch::BoostStepperType::BoostStepperType stepper_type = Antioch::BoostStepperType::RUNGE_KUTTA_FOURTH;
+  Antioch::BoostStepperType::BoostStepperType stepper_type = Antioch::BoostStepperType::RUNGE_KUTTA_CASH_KARP_54;
+  
+  Antioch::BoostODEIntegrator<Scalar,Scalar> integrator( stepper_type );
 
   Antioch::IsothermalStirredReactor<Scalar,Scalar> reactor( T, reaction_set, thermo, integrator, 0.0 /*example*/ );
 

@@ -109,16 +109,46 @@ namespace Antioch
 
     unsigned int n_steps = 0;
 
+    // Parameters for adaptive time steppers
     CoeffType abs_err = 1.0e-10;
     CoeffType rel_err = 1.0e-6;
     CoeffType a_x = 1.0;
     CoeffType a_dxdt = 1.0;
 
-    // Shoudl error_checker be templated on StateType?
-    boost::numeric::odeint::controlled_runge_kutta< boost::numeric::odeint::runge_kutta_cash_karp54<VectorStateType> > stepper( boost::numeric::odeint::default_error_checker<CoeffType>( abs_err , rel_err , a_x , a_dxdt ) );
+    // Error checker, for use with adaptive algorithms
+    // Should error_checker be templated on StateType?
+    boost::numeric::odeint::default_error_checker<CoeffType> error_checker( abs_err , rel_err , a_x , a_dxdt );
 
-    n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+    switch( _stepper_type )
+      {
+      case( BoostStepperType::RUNGE_KUTTA_FOURTH ):
+        {
+          boost::numeric::odeint::runge_kutta4<VectorStateType> stepper;
 
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+        }
+        break;
+
+      case( BoostStepperType::RUNGE_KUTTA_CASH_KARP_54 ):
+        {
+          typedef boost::numeric::odeint::runge_kutta_cash_karp54<VectorStateType> stepper_type;
+
+          // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
+          boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
+          
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+        }
+        break;
+
+      default:
+        {
+          std::cerr << "Invalid Boost ODEInt time stepping algorithm: " << _stepper_type << std::endl;
+          antioch_error();
+        }
+
+      } // switch( _stepper_type )
+
+    // Reset to NULL since we lost control of the reactor again
     _reactor = NULL;
 
     return n_steps;
