@@ -24,6 +24,9 @@
 #ifndef ANTIOCH_ISOTHERMAL_STIRRED_REACTOR_H
 #define ANTIOCH_ISOTHERMAL_STIRRED_REACTOR_H
 
+// Antioch
+#include "antioch/stirred_reactor_enum.h"
+
 namespace Antioch
 {
   template<typename CoeffType=double, typename StateType=CoeffType>
@@ -75,6 +78,9 @@ namespace Antioch
                                               volume, example),
       _cache(T)
   {
+    // Reset reactor_type to correct value
+    _reactor_type = ReactorType::ISOTHERMAL;
+
     return;
   }
 
