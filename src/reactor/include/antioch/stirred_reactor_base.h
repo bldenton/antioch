@@ -24,8 +24,15 @@
 #ifndef ANTIOCH_STIRRED_REACTOR_BASE_H
 #define ANTIOCH_STIRRED_REACTOR_BASE_H
 
+// Antioch
+#include "antioch/stirred_reactor_enum.h"
+
 namespace Antioch
 {
+  // Foward declarations
+  template<typename CoeffType, typename StateType>
+  class IsothermalStirredReactor;
+  
   template<typename CoeffType=double, typename StateType=CoeffType>
   class StirredReactorBase
   {
