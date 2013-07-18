@@ -26,12 +26,20 @@
 
 // Antioch
 #include "antioch/stirred_reactor_enum.h"
+#include "antioch/chemical_mixture.h"
+#include "antioch/reaction_set.h"
+#include "antioch/cea_mixture.h"
+#include "antioch/kinetics_evaluator.h"
+#include "antioch/cea_evaluator.h"
 
 namespace Antioch
 {
   // Foward declarations
   template<typename CoeffType, typename StateType>
   class IsothermalStirredReactor;
+
+  template<typename CoeffType, typename StateType>
+  class StirredReactorTimeIntegratorBase;
   
   template<typename CoeffType=double, typename StateType=CoeffType>
   class StirredReactorBase
@@ -65,7 +73,7 @@ namespace Antioch
 
   protected:
 
-    ReactorType _reactor_type;
+    ReactorType::ReactorType _reactor_type;
 
     const ReactionSet<CoeffType>& _reaction_set;
 
@@ -96,7 +104,7 @@ namespace Antioch
     StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
     const StateType example,
     CoeffType volume )
-    : _reactor_type(INVALID),
+    : _reactor_type(ReactorType::INVALID),
       _reaction_set( reaction_set ),
       _chem_mixture( reaction_set.chemical_mixture() ),
       _thermo(thermo),
@@ -124,7 +132,7 @@ namespace Antioch
                                                      const CoeffType t1,
                                                      const CoeffType dt )
   {
-    _time_integrator.integrate( x0, t0, t1, dt, (*this) )
+    _time_integrator.integrate( x0, t0, t1, dt, (*this) );
     return;
   }
 
@@ -138,7 +146,7 @@ namespace Antioch
       {
       case( ReactorType::ISOTHERMAL ):
         {
-          (static_cast<IsothermalStirredReactor*>(this))( x, dx_dt );
+          (static_cast<IsothermalStirredReactor<CoeffType,StateType>* >(this))( x, dx_dt );
         }
         break;
 

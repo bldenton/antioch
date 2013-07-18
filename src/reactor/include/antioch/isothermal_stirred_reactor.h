@@ -26,11 +26,12 @@
 
 // Antioch
 #include "antioch/stirred_reactor_enum.h"
+#include "antioch/stirred_reactor_base.h"
 
 namespace Antioch
 {
   template<typename CoeffType=double, typename StateType=CoeffType>
-  class IsothermalStirredReactor : public StirredReactorBase
+  class IsothermalStirredReactor : public StirredReactorBase<CoeffType,StateType>
   {
 
   public:
@@ -73,13 +74,13 @@ namespace Antioch
     const CEAThermoMixture<CoeffType>& thermo,
     StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
     const StateType example,
-    CoeffType volume = 1.0 /* m^3 */ )
+    CoeffType volume )
     : StirredReactorBase<CoeffType,StateType>(reaction_set, thermo, time_integrator,
                                               volume, example),
       _cache(T)
   {
     // Reset reactor_type to correct value
-    _reactor_type = ReactorType::ISOTHERMAL;
+    this->_reactor_type = ReactorType::ISOTHERMAL;
 
     return;
   }
@@ -100,10 +101,10 @@ namespace Antioch
   {
     VectorStateType h_RT_minus_s_R = zero_clone(x);
 
-    _thermo_evaluator.h_RT_minus_s_R( _cache, h_RT_minus_s_R );
+    this->_thermo_evaluator.h_RT_minus_s_R( _cache, h_RT_minus_s_R );
 
     // Here, x is the vector of molar densities
-    _kinetics_evaluator.compute_mole_sources( _cache.T, x, h_RT_minus_s_R, dx_dt );
+    this->_kinetics_evaluator.compute_mole_sources( _cache.T, x, h_RT_minus_s_R, dx_dt );
 
     return;
   }

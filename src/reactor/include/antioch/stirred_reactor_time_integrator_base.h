@@ -26,6 +26,7 @@
 
 // Antioch
 #include "antioch/stirred_reactor_enum.h"
+#include "antioch/stirred_reactor_base.h"
 
 namespace Antioch
 {
@@ -56,7 +57,7 @@ namespace Antioch
 
   protected:
 
-    TimeIntegratorType _integrator_type;
+    TimeIntegratorType::TimeIntegratorType _integrator_type;
 
   };
 
@@ -64,7 +65,7 @@ namespace Antioch
   template<typename CoeffType, typename StateType>
   inline
   StirredReactorTimeIntegratorBase<CoeffType,StateType>::StirredReactorTimeIntegratorBase()
-    : _integrator_type(INVALID)
+    : _integrator_type(TimeIntegratorType::INVALID)
   {
     return;
   }
@@ -93,7 +94,7 @@ namespace Antioch
       {
       case( TimeIntegratorType::BOOST_ODE_INTEGRATOR ):
         {
-          n_steps = (static_cast<BoostODEIntergrator*>(this))->integrate(x0, t0, t1, dt, reactor);
+          n_steps = (static_cast<BoostODEIntergrator<CoeffType,StateType>* >(this))->integrate(x0, t0, t1, dt, reactor);
         }
         break;
 
