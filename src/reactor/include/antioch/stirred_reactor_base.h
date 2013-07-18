@@ -61,12 +61,6 @@ namespace Antioch
     void run( VectorStateType& x0,
               CoeffType t0,
               CoeffType t1,
-              CoeffType dt );
-
-    template<typename VectorStateType>
-    void run( VectorStateType& x0,
-              CoeffType t0,
-              CoeffType t1,
               CoeffType dt,
               StirredReactorObserver<CoeffType,VectorStateType>& observer );
 
@@ -121,19 +115,6 @@ namespace Antioch
   }
 
   /* ------------------------- Inline Functions -------------------------*/
-  template<typename CoeffType, typename StateType>
-  template<typename VectorStateType>
-  inline
-  void StirredReactorBase<CoeffType,StateType>::run( VectorStateType& x0,
-                                                     CoeffType t0,
-                                                     CoeffType t1,
-                                                     CoeffType dt )
-  {
-    _time_integrator.integrate( x0, t0, t1, dt, (*this) );
-
-    return;
-  }
-
   template<typename CoeffType, typename StateType>
   template<typename VectorStateType>
   inline

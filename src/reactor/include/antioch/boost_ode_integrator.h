@@ -55,7 +55,8 @@ namespace Antioch
                             CoeffType t0,
                             CoeffType t1,
                             CoeffType dt,
-                            StirredReactorBase<CoeffType,StateType>& reactor );
+                            StirredReactorBase<CoeffType,StateType>& reactor,
+                            StirredReactorObserver<CoeffType,VectorStateType>& observer );
 
     template<typename VectorStateType>
     void operator()( const VectorStateType& x,
@@ -103,7 +104,8 @@ namespace Antioch
     CoeffType t0,
     CoeffType t1,
     CoeffType dt,
-    StirredReactorBase<CoeffType,StateType>& reactor )
+    StirredReactorBase<CoeffType,StateType>& reactor,
+    StirredReactorObserver<CoeffType,VectorStateType>& observer )
   {
     _reactor = &reactor;
 
@@ -125,7 +127,9 @@ namespace Antioch
         {
           boost::numeric::odeint::runge_kutta4<VectorStateType> stepper;
 
-          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt, observer );
+
+          observer.output_ascii(std::cout);
         }
         break;
 
@@ -136,7 +140,7 @@ namespace Antioch
           // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
           boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
           
-          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt, observer );
         }
         break;
 
@@ -147,7 +151,7 @@ namespace Antioch
           // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
           boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
           
-          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt, observer );
         }
         break;
 
@@ -158,7 +162,7 @@ namespace Antioch
           // This is an adaptive algorithm, so we need a controlled stepper, which used the error checker.
           boost::numeric::odeint::controlled_runge_kutta< stepper_type > stepper( error_checker );
           
-          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt );
+          n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt, observer );
         }
         break;
 

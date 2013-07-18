@@ -53,7 +53,8 @@ namespace Antioch
                             CoeffType t0,
                             CoeffType t1,
                             CoeffType dt,
-                            StirredReactorBase<CoeffType,StateType>& reactor );
+                            StirredReactorBase<CoeffType,StateType>& reactor,
+                            StirredReactorObserver<CoeffType,VectorStateType>& observer );
 
   protected:
 
@@ -86,7 +87,8 @@ namespace Antioch
     CoeffType t0,
     CoeffType t1,
     CoeffType dt,
-    StirredReactorBase<CoeffType,StateType>& reactor )
+    StirredReactorBase<CoeffType,StateType>& reactor,
+    StirredReactorObserver<CoeffType,VectorStateType>& observer )
   {
     unsigned int n_steps = 0;
 
@@ -95,7 +97,7 @@ namespace Antioch
       case( TimeIntegratorType::BOOST_ODE_INTEGRATOR ):
         {
           BoostODEIntegrator<CoeffType,StateType>* p = static_cast<BoostODEIntegrator<CoeffType,StateType>* >(this);
-          n_steps = p->integrate(x0, t0, t1, dt, reactor);
+          n_steps = p->integrate(x0, t0, t1, dt, reactor, observer);
         }
         break;
 
