@@ -31,6 +31,7 @@
 #include "antioch/cea_mixture.h"
 #include "antioch/kinetics_evaluator.h"
 #include "antioch/cea_evaluator.h"
+#include "antioch/stirred_reactor_observer.h"
 
 namespace Antioch
 {
@@ -61,8 +62,13 @@ namespace Antioch
               CoeffType t0,
               CoeffType t1,
               CoeffType dt );
-              
-    void output( std::ostream& output ) const;
+
+    template<typename VectorStateType>
+    void run( VectorStateType& x0,
+              CoeffType t0,
+              CoeffType t1,
+              CoeffType dt,
+              StirredReactorObserver<CoeffType,VectorStateType>& observer );
 
     //! Evaluate net production for ODE solvers
     /*! We can't make this virtual since the function is templated,
@@ -124,6 +130,21 @@ namespace Antioch
                                                      CoeffType dt )
   {
     _time_integrator.integrate( x0, t0, t1, dt, (*this) );
+
+    return;
+  }
+
+  template<typename CoeffType, typename StateType>
+  template<typename VectorStateType>
+  inline
+  void StirredReactorBase<CoeffType,StateType>::run( VectorStateType& x0,
+                                                     CoeffType t0,
+                                                     CoeffType t1,
+                                                     CoeffType dt,
+                                                     StirredReactorObserver<CoeffType,VectorStateType>& observer )
+  {
+    _time_integrator.integrate( x0, t0, t1, dt, (*this), observer );
+
     return;
   }
 
@@ -155,6 +176,7 @@ namespace Antioch
         }
 
       } // switch( _reactor_type )
+
     return;
   }
 

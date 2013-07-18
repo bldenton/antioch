@@ -81,23 +81,14 @@ namespace Antioch
   inline
   void StirredReactorObserver<CoeffType,VectorStateType>::output_ascii( std::ostream& output ) const
   {
-    unsigned int n_species = _kinetics_evalutor.reaction_set().n_species();
-
     // Header
     output << "#         t               x[s]" << std::endl;
     
     output << std::scientific << std::setprecision(10);
-    unsigned int n_steps = this->n_steps();
 
-    for( unsigned t = 0; t < n_steps; t++ )
+    for( unsigned t = 0; t < _time_hist.size(); t++ )
       {
-        output << this->time(t) << " ";
-        for( unsigned s = 0; s < n_species; s++ )
-          {
-            output << this->X(t,s) << " ";
-          }
-        
-        output << std::endl;
+        output << _time_hist[t] << " " << _x_hist[t];
       }
     
     return;
