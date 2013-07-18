@@ -55,6 +55,8 @@ namespace Antioch
 
   protected:
 
+    ReactorType _reactor_type;
+
     const ReactionSet<CoeffType>& _reaction_set;
 
     const ChemicalMixture<CoeffType>& _chem_mixture;
@@ -84,7 +86,8 @@ namespace Antioch
     StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
     const StateType example,
     CoeffType volume )
-    : _reaction_set( reaction_set ),
+    : _reactor_type(INVALID),
+      _reaction_set( reaction_set ),
       _chem_mixture( reaction_set.chemical_mixture() ),
       _thermo(thermo),
       _time_integrator(time_integrator),
