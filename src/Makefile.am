@@ -67,6 +67,12 @@ pkginclude_HEADERS += parsing/include/antioch/xml_parser.h
 pkginclude_HEADERS += parsing/include/antioch/chemkin_definitions.h
 pkginclude_HEADERS += parsing/include/antioch/chemkin_parser.h
 
+# reactor
+include_HEADERS += reactor/include/antioch/boost_ode_integrator.h
+include_HEADERS += reactor/include/antioch/isothermal_stirred_reactor.h
+include_HEADERS += reactor/include/antioch/stirred_reactor_base.h
+include_HEADERS += reactor/include/antioch/stirred_reactor_time_integrator_base.h
+
 # thermo
 pkginclude_HEADERS += thermo/include/antioch/cea_curve_fit.h
 pkginclude_HEADERS += thermo/include/antioch/cea_mixture.h
@@ -121,6 +127,7 @@ AM_CPPFLAGS += -I$(top_srcdir)/src/units/include
 AM_CPPFLAGS += -I$(top_srcdir)/src/particles_flux/include
 AM_CPPFLAGS += -I$(top_srcdir)/src/kinetics/include
 AM_CPPFLAGS += -I$(top_srcdir)/src/parsing/include
+AM_CPPFLAGS += -I$(top_srcdir)/src/reactor/include
 AM_CPPFLAGS += -I$(top_srcdir)/src/thermo/include
 AM_CPPFLAGS += -I$(top_srcdir)/src/transport/include
 AM_CPPFLAGS += -I$(top_srcdir)/src/utilities/include
