@@ -49,6 +49,9 @@ namespace Antioch
               
     void output( std::ostream& output ) const;
 
+    //! Evaluate net production for ODE solvers
+    /*! We can't make this virtual since the function is templated,
+        so we manually dispatch to derived classes. */
     template<typename VectorStateType>
     void operator()( const VectorStateType& x,
                      VectorStateType& dx_dt );
@@ -115,6 +118,37 @@ namespace Antioch
                                                      const CoeffType dt )
   {
     _time_integrator.integrate( x0, t0, t1, dt, (*this) )
+    return;
+  }
+
+  template<typename CoeffType, typename StateType>
+  template<typename VectorStateType>
+  inline
+  void StirredReactorBase<CoeffType,StateType>::operator()( const VectorStateType& x,
+                                                            VectorStateType& dx_dt )
+  {
+    switch( _reactor_type )
+      {
+      case( ReactorType::ISOTHERMAL ):
+        {
+          (static_cast<IsothermalStirredReactor*>(this))( x, dx_dt );
+        }
+        break;
+
+      case( ReactorType::INVALID ):
+        {
+          std::cerr << "Error: Must use a valid, derived stirred reactor class." << std::endl;
+          antioch_error();
+        }
+        break;
+
+      // Wat?!
+      default:
+        {
+          antioch_error();
+        }
+
+      } // switch( _reactor_type )
     return;
   }
 
