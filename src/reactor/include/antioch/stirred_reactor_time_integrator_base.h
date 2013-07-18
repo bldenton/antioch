@@ -24,6 +24,9 @@
 #ifndef ANTIOCH_STIRRED_REACTOR_TIME_INTEGRATOR_BASE_H
 #define ANTIOCH_STIRRED_REACTOR_TIME_INTEGRATOR_BASE_H
 
+// Antioch
+#include "antioch/stirred_reactor_enum.h"
+
 namespace Antioch
 {
 
@@ -33,7 +36,7 @@ namespace Antioch
 
   public:
 
-    StirredReactorTimeIntegratorBase( TimeIntegratorType integrator_type );
+    StirredReactorTimeIntegratorBase();
 
     virtual ~StirredReactorTimeIntegratorBase();
 
@@ -53,18 +56,13 @@ namespace Antioch
 
     TimeIntegratorType _integrator_type;
 
-  private:
-
-    StirredReactorTimeIntegratorBase();
-
   };
 
   /* ---------------------- Constructor/Destructor ----------------------*/
   template<typename CoeffType, typename StateType>
   inline
-  StirredReactorTimeIntegratorBase<CoeffType,StateType>::StirredReactorTimeIntegratorBase
-  ( TimeIntegratorType integrator_type )
-    : _integrator_type(integrator_type)
+  StirredReactorTimeIntegratorBase<CoeffType,StateType>::StirredReactorTimeIntegratorBase()
+    : _integrator_type(INVALID)
   {
     return;
   }
@@ -94,6 +92,13 @@ namespace Antioch
       case( TimeIntegratorType::BOOST_ODE_INTEGRATOR ):
         {
           n_steps = (static_cast<BoostODEIntergrator*>(this))->integrate(x0, t0, t1, dt, reactor);
+        }
+        break;
+
+      case( TimeIntegratorType::INVALID ):
+        {
+          std::cerr << "Error: Must use a valid, derived time integrator class." << std::endl;
+          antioch_error();
         }
         break;
 
