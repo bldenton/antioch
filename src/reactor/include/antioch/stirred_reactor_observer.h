@@ -63,6 +63,7 @@ namespace Antioch
   inline
   StirredReactorObserver<CoeffType,VectorStateType>::~StirredReactorObserver()
   {
+    std::cout << "Destructor called" << std::endl;
     return;
   }
 
@@ -70,9 +71,12 @@ namespace Antioch
   inline
   void StirredReactorObserver<CoeffType,VectorStateType>::operator()( const VectorStateType& x, CoeffType time )
   {
+    
     _time_hist.push_back(time);
     
     _x_hist.push_back( x );
+
+    std::cout << time << " " << x << std::endl;
 
     return;
   }
@@ -86,9 +90,11 @@ namespace Antioch
     
     output << std::scientific << std::setprecision(10);
 
-    for( unsigned t = 0; t < _time_hist.size(); t++ )
+    std::cout << "time hist size = " << _time_hist.size() << std::endl;
+
+    for( unsigned int t = 0; t < _time_hist.size(); t++ )
       {
-        output << _time_hist[t] << " " << _x_hist[t];
+        output << _time_hist[t] << " " << _x_hist[t] << std::endl;
       }
     
     return;
