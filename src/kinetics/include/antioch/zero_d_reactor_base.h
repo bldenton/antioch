@@ -34,6 +34,7 @@ namespace Antioch
 
     //! Constructor.
     ZeroDimensonalReactorBase( const ReactionSet<CoeffType>& reaction_set,
+                               const CEAMixture<CoeffType>& thermo,
                                const StateType& example );
 
     virtual ~ZeroDimensonalReactorBase();
@@ -53,6 +54,16 @@ namespace Antioch
     const ReactionSet<CoeffType>& _reaction_set;
 
     const ChemicalMixture<CoeffType>& _chem_mixture;
+
+    std::vector<CoeffType> _time_hist;
+
+    std::vector<StateType> _T_hist;
+
+    std::vector<std::vector<StateType> > _mole_hist;
+
+  private:
+
+    ZeroDimensonalReactorBase();
 
   };
 
