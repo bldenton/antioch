@@ -21,8 +21,8 @@
 //
 //-----------------------------------------------------------------------el-
 
-#ifndef ANTIOCH_ZERO_D_REACTOR_BASE_H
-#define ANTIOCH_ZERO_D_REACTOR_BASE_H
+#ifndef ANTIOCH_STIRRED_REACTOR_BASE_H
+#define ANTIOCH_STIRRED_REACTOR_BASE_H
 
 namespace Antioch
 {
@@ -34,36 +34,36 @@ namespace Antioch
 
     //! Constructor.
     StirredReactorBase( const ReactionSet<CoeffType>& reaction_set,
-                               const CEAMixture<CoeffType>& thermo,
-                               const StateType& example );
+                        const CEAThermoMixture<CoeffType>& thermo,
+                        StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator );
 
     virtual ~StirredReactorBase();
 
     template<typename VectorStateType>
-    void run( const StateType& T,
-              const VectorStateType& molar_densities,
+    void run( const VectorStateType& x0,
               const CoeffType t0,
               const CoeffType t1,
-              const CoeffType dt,
-              const unsigned int estimated_n_steps = 100 );
+              const CoeffType dt );
               
     void output( std::ostream& output ) const;
 
     template<typename VectorStateType>
     void operator()( const VectorStateType& x,
-                     const VectorStateType& dx_dt );
+                     VectorStateType& dx_dt );
 
   protected:
 
     const ReactionSet<CoeffType>& _reaction_set;
 
     const ChemicalMixture<CoeffType>& _chem_mixture;
+    
+    const CEAThermoMixture<CoeffType>& _thermo;
 
-    std::vector<CoeffType> _time_hist;
+    StirredReactorTimeIntegratorBase<CoeffType,StateType>& _time_integrator;
 
-    std::vector<StateType> _T_hist;
+    KineticsEvaluator<CoeffType,StateType> _kinetics_evaluator;
 
-    std::vector<std::vector<StateType> > _mole_hist;
+    CEAEvaluator<CoeffType> _cea_evaluator;
 
   private:
 
@@ -76,9 +76,15 @@ namespace Antioch
   inline
   StirredReactorBase<CoeffType,StateType>::StirredReactorBase
   ( const ReactionSet<CoeffType>& reaction_set,
-    const StateType& example )
+    const CEAThermoMixture<CoeffType>& thermo,
+    StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
+    const StateType example )
     : _reaction_set( reaction_set ),
-      _chem_mixture( reaction_set.chemical_mixture() )
+      _chem_mixture( reaction_set.chemical_mixture() ),
+      _thermo(thermo),
+      _time_integrator(time_integrator),
+      _kinetics_evaluator(_reaction_set,example),
+      _cea_evaluator(thermo)
   {
     return;
   }
@@ -91,7 +97,18 @@ namespace Antioch
   }
 
   /* ------------------------- Inline Functions -------------------------*/
+  template<typename CoeffType, typename StateType>
+  template<typename VectorStateType>
+  inline
+  void StirredReactorBase<CoeffType,StateType>::run( const VectorStateType& x0,
+                                                     const CoeffType t0,
+                                                     const CoeffType t1,
+                                                     const CoeffType dt )
+  {
+    _time_integrator.integrate( x0, t0, t1, dt, (*this) )
+    return;
+  }
 
 } // end namespace Antioch
 
-#endif // ANTIOCH_ZERO_D_REACTOR_BASE_H
+#endif // ANTIOCH_STIRRED_REACTOR_BASE_H
