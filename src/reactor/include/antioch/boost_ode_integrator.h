@@ -46,20 +46,27 @@ namespace Antioch
 
   public:
 
-    BoostODEIntegrator( BoostStepperType stepper_type );
+    BoostODEIntegrator( BoostStepperType::BoostStepperType stepper_type );
 
     virtual ~BoostODEIntegrator();
 
-  protected:
-
-    BoostStepperType _stepper_type;
-
-    StirredReactorBase<CoeffType,StateType>* _reactor;
+    template<typename VectorStateType>
+    unsigned int integrate( const VectorStateType& x0,
+                            const CoeffType t0,
+                            const CoeffType t1,
+                            const CoeffType dt,
+                            StirredReactorBase<CoeffType,StateType>& reactor );
 
     template<typename VectorStateType>
     void operator()( const VectorStateType& x,
                      VectorStateType& dx_dt,
                      const CoeffType t );
+
+  protected:
+
+    BoostStepperType::BoostStepperType _stepper_type;
+
+    StirredReactorBase<CoeffType,StateType>* _reactor;
 
   private:
 
@@ -71,11 +78,12 @@ namespace Antioch
   template<typename CoeffType, typename StateType>
   inline
   BoostODEIntegrator<CoeffType,StateType>::BoostODEIntegrator
-  ( BoostStepperType stepper_type )
-    : StirredReactorTimeIntegratorBase<CoeffType,StateType>(TimeIntegratorType::BOOST_ODE_INTEGRATOR),
+  ( BoostStepperType::BoostStepperType stepper_type )
+    : StirredReactorTimeIntegratorBase<CoeffType,StateType>(),
       _stepper_type(stepper_type),
       _reactor(NULL)
   {
+    this->_integrator_type = TimeIntegratorType::BOOST_ODE_INTEGRATOR;
     return;
   }
     

@@ -32,7 +32,7 @@ namespace Antioch
 {
   // Foward declarations
   template<typename CoeffType, typename StateType>
-  class BoostODEIntergrator;
+  class BoostODEIntegrator;
 
   template<typename CoeffType=double, typename StateType=CoeffType>
   class StirredReactorTimeIntegratorBase
@@ -94,7 +94,8 @@ namespace Antioch
       {
       case( TimeIntegratorType::BOOST_ODE_INTEGRATOR ):
         {
-          n_steps = (static_cast<BoostODEIntergrator<CoeffType,StateType>* >(this))->integrate(x0, t0, t1, dt, reactor);
+          BoostODEIntegrator<CoeffType,StateType>* p = static_cast<BoostODEIntegrator<CoeffType,StateType>* >(this);
+          n_steps = p->integrate(x0, t0, t1, dt, reactor);
         }
         break;
 

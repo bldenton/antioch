@@ -146,7 +146,7 @@ namespace Antioch
       {
       case( ReactorType::ISOTHERMAL ):
         {
-          (static_cast<IsothermalStirredReactor<CoeffType,StateType>* >(this))( x, dx_dt );
+          (*(static_cast<IsothermalStirredReactor<CoeffType,StateType>* >(this)))( x, dx_dt );
         }
         break;
 
