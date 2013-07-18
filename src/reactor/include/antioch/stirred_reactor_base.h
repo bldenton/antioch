@@ -57,10 +57,10 @@ namespace Antioch
     virtual ~StirredReactorBase();
 
     template<typename VectorStateType>
-    void run( const VectorStateType& x0,
-              const CoeffType t0,
-              const CoeffType t1,
-              const CoeffType dt );
+    void run( VectorStateType& x0,
+              CoeffType t0,
+              CoeffType t1,
+              CoeffType dt );
               
     void output( std::ostream& output ) const;
 
@@ -127,10 +127,10 @@ namespace Antioch
   template<typename CoeffType, typename StateType>
   template<typename VectorStateType>
   inline
-  void StirredReactorBase<CoeffType,StateType>::run( const VectorStateType& x0,
-                                                     const CoeffType t0,
-                                                     const CoeffType t1,
-                                                     const CoeffType dt )
+  void StirredReactorBase<CoeffType,StateType>::run( VectorStateType& x0,
+                                                     CoeffType t0,
+                                                     CoeffType t1,
+                                                     CoeffType dt )
   {
     _time_integrator.integrate( x0, t0, t1, dt, (*this) );
     return;

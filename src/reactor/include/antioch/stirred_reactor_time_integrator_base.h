@@ -49,10 +49,10 @@ namespace Antioch
         if using the base class and not a derived class. 
         Returns number of time steps taken. */
     template<typename VectorStateType>
-    unsigned int integrate( const VectorStateType& x0,
-                            const CoeffType t0,
-                            const CoeffType t1,
-                            const CoeffType dt,
+    unsigned int integrate( VectorStateType& x0,
+                            CoeffType t0,
+                            CoeffType t1,
+                            CoeffType dt,
                             StirredReactorBase<CoeffType,StateType>& reactor );
 
   protected:
@@ -82,10 +82,10 @@ namespace Antioch
   template<typename VectorStateType>
   inline
   unsigned int StirredReactorTimeIntegratorBase<CoeffType,StateType>::integrate
-  ( const VectorStateType& x0,
-    const CoeffType t0,
-    const CoeffType t1,
-    const CoeffType dt,
+  ( VectorStateType& x0,
+    CoeffType t0,
+    CoeffType t1,
+    CoeffType dt,
     StirredReactorBase<CoeffType,StateType>& reactor )
   {
     unsigned int n_steps = 0;

@@ -51,10 +51,10 @@ namespace Antioch
     virtual ~BoostODEIntegrator();
 
     template<typename VectorStateType>
-    unsigned int integrate( const VectorStateType& x0,
-                            const CoeffType t0,
-                            const CoeffType t1,
-                            const CoeffType dt,
+    unsigned int integrate( VectorStateType& x0,
+                            CoeffType t0,
+                            CoeffType t1,
+                            CoeffType dt,
                             StirredReactorBase<CoeffType,StateType>& reactor );
 
     template<typename VectorStateType>
@@ -99,10 +99,10 @@ namespace Antioch
   template<typename VectorStateType>
   inline
   unsigned int BoostODEIntegrator<CoeffType,StateType>::integrate
-  ( const VectorStateType& x0,
-    const CoeffType t0,
-    const CoeffType t1,
-    const CoeffType dt,
+  ( VectorStateType& x0,
+    CoeffType t0,
+    CoeffType t1,
+    CoeffType dt,
     StirredReactorBase<CoeffType,StateType>& reactor )
   {
     _reactor = &reactor;
