@@ -29,6 +29,8 @@
 #include <vector>
 
 // Antioch
+#include "antioch/vector_utils.h"
+
 #include "antioch/antioch_asserts.h"
 #include "antioch/chemical_species.h"
 #include "antioch/chemical_mixture.h"
@@ -64,7 +66,7 @@ int tester(const std::string& input_name)
 
   int return_flag = 0;
 
-  Antioch::BoostODEIntegrator<Scalar,Scalar> integrator( BoostStepperType::RUNGE_KUTTA_FOURTH );
+  Antioch::BoostODEIntegrator<Scalar,Scalar> integrator( Antioch::BoostStepperType::RUNGE_KUTTA_FOURTH );
 
   Antioch::IsothermalStirredReactor<Scalar,Scalar> reactor( T, reaction_set, thermo, integrator, 0.0 /*example*/ );
 
