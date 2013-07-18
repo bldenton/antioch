@@ -39,6 +39,8 @@ namespace Antioch
 
   protected:
 
+    BoostStepperType _stepper_type;
+
     StirredReactorBase<CoeffType,StateType>* _reactor;
 
     template<typename VectorStateType>
@@ -57,7 +59,9 @@ namespace Antioch
   inline
   BoostODEIntegrator<CoeffType,StateType>::BoostODEIntegrator
   ( BoostStepperType stepper_type )
-    : _stepper_type(stepper_type)
+    : StirredReactorTimeIntegratorBase<CoeffType,StateType>(TimeIntegratorType::BOOST_ODE_INTEGRATOR),
+      _stepper_type(stepper_type),
+      _reactor(NULL)
   {
     return;
   }
