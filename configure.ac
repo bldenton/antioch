@@ -125,6 +125,8 @@ if (test x$HAVE_GRVY = x1); then
 fi
 
 dnl Use Boost.ODEInt if it is found
+dnl Need to call BOOST_REQUIRE first to setup flags used in
+dnl the BOOST_FIND_HEADER macro.
 BOOST_REQUIRE([1.53.0], [AC_MSG_WARN([Could not find suitable Boost installation.])] )
 
 BOOST_FIND_HEADER( [boost/numeric/odeint.hpp],
