@@ -40,7 +40,8 @@ namespace Antioch
 
   namespace BoostStepperType
   {
-    enum BoostStepperType{ RUNGE_KUTTA_FOURTH };
+    enum BoostStepperType{ RUNGE_KUTTA_FOURTH = 0,
+                           RUNGE_KUTTA_CASH_KARP_54 };
   }
 
 } // end namespace Antioch
