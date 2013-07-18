@@ -27,17 +27,17 @@
 namespace Antioch
 {
   template<typename CoeffType=double, typename StateType=CoeffType>
-  class ZeroDimensonalReactorBase
+  class StirredReactorBase
   {
 
   public:
 
     //! Constructor.
-    ZeroDimensonalReactorBase( const ReactionSet<CoeffType>& reaction_set,
+    StirredReactorBase( const ReactionSet<CoeffType>& reaction_set,
                                const CEAMixture<CoeffType>& thermo,
                                const StateType& example );
 
-    virtual ~ZeroDimensonalReactorBase();
+    virtual ~StirredReactorBase();
 
     template<typename VectorStateType>
     void run( const StateType& T,
@@ -46,8 +46,12 @@ namespace Antioch
               const CoeffType t1,
               const CoeffType dt,
               const unsigned int estimated_n_steps = 100 );
-                   
+              
     void output( std::ostream& output ) const;
+
+    template<typename VectorStateType>
+    void operator()( const VectorStateType& x,
+                     const VectorStateType& dx_dt );
 
   protected:
 
@@ -63,14 +67,14 @@ namespace Antioch
 
   private:
 
-    ZeroDimensonalReactorBase();
+    StirredReactorBase();
 
   };
 
   /* ---------------------- Constructor/Destructor ----------------------*/
   template<typename CoeffType, typename StateType>
   inline
-  ZeroDimensonalReactorBase<CoeffType,StateType>::ZeroDimensonalReactorBase
+  StirredReactorBase<CoeffType,StateType>::StirredReactorBase
   ( const ReactionSet<CoeffType>& reaction_set,
     const StateType& example )
     : _reaction_set( reaction_set ),
@@ -81,7 +85,7 @@ namespace Antioch
 
   template<typename CoeffType, typename StateType>
   inline
-  ZeroDimensonalReactorBase<CoeffType,StateType>::~ZeroDimensonalReactorBase()
+  StirredReactorBase<CoeffType,StateType>::~StirredReactorBase()
   {
     return;
   }
