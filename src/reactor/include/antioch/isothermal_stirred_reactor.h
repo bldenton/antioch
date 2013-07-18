@@ -40,8 +40,8 @@ namespace Antioch
                               const ReactionSet<CoeffType>& reaction_set,
                               const CEAThermoMixture<CoeffType>& thermo,
                               StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
-                              CoeffType volume = 1.0, /* m^3 */
-                              const StateType example );
+                              const StateType example,
+                              CoeffType volume = 1.0 /* m^3 */);
 
     virtual ~IsothermalStirredReactor();
 
