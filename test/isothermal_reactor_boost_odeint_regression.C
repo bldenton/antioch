@@ -81,7 +81,11 @@ int tester(const std::string& input_name)
   x0[2] = 0.5;
   x0[3] = 0.5;
 
-  Antioch::StirredReactorObserver<Scalar,std::vector<Scalar> > observer;
+  std::vector<double> time_hist;
+
+  std::vector<std::vector<double> > x_hist;
+
+  Antioch::StirredReactorObserver<Scalar,std::vector<Scalar> > observer( time_hist, x_hist );
 
   reactor.run( x0, 0.0, 1.0e-7, 1.0e-12, observer );
 

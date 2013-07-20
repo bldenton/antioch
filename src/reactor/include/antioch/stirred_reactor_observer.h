@@ -32,7 +32,9 @@ namespace Antioch
   {
   public:
 
-    StirredReactorObserver( const unsigned int n_est_steps = 100 );
+    StirredReactorObserver( std::vector<CoeffType>& time_hist,
+                            std::vector<VectorStateType>& x_hist,
+                            const unsigned int n_est_steps = 100 );
 
     virtual ~StirredReactorObserver();
 
@@ -42,16 +44,24 @@ namespace Antioch
 
   protected:
 
-    std::vector<CoeffType> _time_hist;
+    std::vector<CoeffType>& _time_hist;
 
-    std::vector<VectorStateType> _x_hist;
+    std::vector<VectorStateType>& _x_hist;
+
+  private:
+
+    StirredReactorObserver();
 
   };
 
   /* ---------------------- Constructor/Destructor ----------------------*/
   template<typename CoeffType,  typename VectorStateType>
   inline
-  StirredReactorObserver<CoeffType,VectorStateType>::StirredReactorObserver( const unsigned int n_est_steps )
+  StirredReactorObserver<CoeffType,VectorStateType>::StirredReactorObserver( std::vector<CoeffType>& time_hist,
+                                                                             std::vector<VectorStateType>& x_hist,
+                                                                             const unsigned int n_est_steps )
+    : _time_hist(time_hist),
+      _x_hist(x_hist)
   {
     _time_hist.reserve(n_est_steps);
     _x_hist.reserve(n_est_steps);
