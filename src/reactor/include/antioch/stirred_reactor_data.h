@@ -97,8 +97,16 @@ namespace Antioch
     unsigned int n_species = _reaction_set.n_species();
     
     // Header
+    output << "# species names" << std::endl;
+    for( unsigned int s = 0; s < n_species; s++ )
+      {
+        output << _reaction_set.chemical_mixture().species_name(s) << " ";
+      }
+    output << std::endl;
+
     output << "#         t               x[s]" << std::endl;
     
+    // Time history of data
     output << std::scientific << std::setprecision(10);
 
     for( unsigned int t = 0; t < _time_hist.size(); t++ )
