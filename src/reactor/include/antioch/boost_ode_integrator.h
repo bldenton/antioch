@@ -128,8 +128,6 @@ namespace Antioch
           boost::numeric::odeint::runge_kutta4<VectorStateType> stepper;
 
           n_steps = boost::numeric::odeint::integrate_adaptive( stepper , (*this) , x0 , t0 , t1 , dt, observer );
-
-          observer.output_ascii(std::cout);
         }
         break;
 

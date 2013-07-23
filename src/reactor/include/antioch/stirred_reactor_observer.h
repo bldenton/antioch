@@ -24,6 +24,9 @@
 #ifndef ANTIOCH_STIRRED_REACTOR_OBSERVER_H
 #define ANTIOCH_STIRRED_REACTOR_OBSERVER_H
 
+// Antioch
+#include "stirred_reactor_data.h"
+
 namespace Antioch
 {
 
@@ -32,21 +35,15 @@ namespace Antioch
   {
   public:
 
-    StirredReactorObserver( std::vector<CoeffType>& time_hist,
-                            std::vector<VectorStateType>& x_hist,
-                            const unsigned int n_est_steps = 100 );
+    StirredReactorObserver( StirredReactorData<CoeffType,VectorStateType>& data );
 
     virtual ~StirredReactorObserver();
 
     void operator()( const VectorStateType& x, CoeffType time );
 
-    void output_ascii( std::ostream& output ) const;
-
   protected:
 
-    std::vector<CoeffType>& _time_hist;
-
-    std::vector<VectorStateType>& _x_hist;
+    StirredReactorData<CoeffType,VectorStateType>& _data;
 
   private:
 
@@ -57,15 +54,9 @@ namespace Antioch
   /* ---------------------- Constructor/Destructor ----------------------*/
   template<typename CoeffType,  typename VectorStateType>
   inline
-  StirredReactorObserver<CoeffType,VectorStateType>::StirredReactorObserver( std::vector<CoeffType>& time_hist,
-                                                                             std::vector<VectorStateType>& x_hist,
-                                                                             const unsigned int n_est_steps )
-    : _time_hist(time_hist),
-      _x_hist(x_hist)
+  StirredReactorObserver<CoeffType,VectorStateType>::StirredReactorObserver( StirredReactorData<CoeffType,VectorStateType>& data )
+    : _data(data)
   {
-    _time_hist.reserve(n_est_steps);
-    _x_hist.reserve(n_est_steps);
-
     return;
   }
 
@@ -73,7 +64,6 @@ namespace Antioch
   inline
   StirredReactorObserver<CoeffType,VectorStateType>::~StirredReactorObserver()
   {
-    std::cout << "Destructor called" << std::endl;
     return;
   }
 
@@ -82,33 +72,14 @@ namespace Antioch
   void StirredReactorObserver<CoeffType,VectorStateType>::operator()( const VectorStateType& x, CoeffType time )
   {
     
-    _time_hist.push_back(time);
+    _data.push_back_time(time);
     
-    _x_hist.push_back( x );
-
-    std::cout << time << " " << x << std::endl;
+    _data.push_back_species( x );
 
     return;
   }
 
-  template<typename CoeffType, typename VectorStateType>
-  inline
-  void StirredReactorObserver<CoeffType,VectorStateType>::output_ascii( std::ostream& output ) const
-  {
-    // Header
-    output << "#         t               x[s]" << std::endl;
-    
-    output << std::scientific << std::setprecision(10);
-
-    std::cout << "time hist size = " << _time_hist.size() << std::endl;
-
-    for( unsigned int t = 0; t < _time_hist.size(); t++ )
-      {
-        output << _time_hist[t] << " " << _x_hist[t] << std::endl;
-      }
-    
-    return;
-  }
+  
 
 } // end namespace Antioch
 

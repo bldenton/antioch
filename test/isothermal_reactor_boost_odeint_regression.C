@@ -40,6 +40,8 @@
 #include "antioch/cea_mixture_ascii_parsing.h"
 #include "antioch/stirred_reactor_enum.h"
 #include "antioch/isothermal_stirred_reactor.h"
+#include "antioch/stirred_reactor_observer.h"
+#include "antioch/stirred_reactor_data.h"
 #include "antioch/boost_ode_integrator.h"
 
 #ifdef ANTIOCH_HAVE_BOOST_ODEINT
@@ -85,11 +87,13 @@ int tester(const std::string& input_name)
 
   std::vector<std::vector<double> > x_hist;
 
-  Antioch::StirredReactorObserver<Scalar,std::vector<Scalar> > observer( time_hist, x_hist );
+  Antioch::StirredReactorData<Scalar,std::vector<Scalar> > data( reaction_set, 1000 );
+
+  Antioch::StirredReactorObserver<Scalar,std::vector<Scalar> > observer( data );
 
   reactor.run( x0, 0.0, 1.0e-7, 1.0e-12, observer );
 
-  observer.output_ascii( std::cout );
+  data.output_ascii( std::cout );
 
   return return_flag;
 }
