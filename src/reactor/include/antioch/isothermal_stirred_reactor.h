@@ -41,8 +41,7 @@ namespace Antioch
                               const ReactionSet<CoeffType>& reaction_set,
                               const CEAThermoMixture<CoeffType>& thermo,
                               StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
-                              const StateType example,
-                              CoeffType volume = 1.0 /* m^3 */);
+                              const StateType example );
 
     virtual ~IsothermalStirredReactor();
 
@@ -73,10 +72,8 @@ namespace Antioch
     const ReactionSet<CoeffType>& reaction_set,
     const CEAThermoMixture<CoeffType>& thermo,
     StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
-    const StateType example,
-    CoeffType volume )
-    : StirredReactorBase<CoeffType,StateType>(reaction_set, thermo, time_integrator,
-                                              volume, example),
+    const StateType example )
+    : StirredReactorBase<CoeffType,StateType>(reaction_set, thermo, time_integrator, example),
       _cache(T)
   {
     // Reset reactor_type to correct value

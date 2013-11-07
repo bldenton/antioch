@@ -52,8 +52,7 @@ namespace Antioch
     StirredReactorBase( const ReactionSet<CoeffType>& reaction_set,
                         const CEAThermoMixture<CoeffType>& thermo,
                         StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
-                        const StateType example,
-                        CoeffType volume = 1.0 /* m^3 */ );
+                        const StateType example );
 
     virtual ~StirredReactorBase();
 
@@ -77,8 +76,6 @@ namespace Antioch
 
     StirredReactorTimeIntegratorBase<CoeffType,StateType>& _time_integrator;
 
-    CoeffType _volume;
-
     KineticsEvaluator<CoeffType,StateType> _kinetics_evaluator;
 
     CEAEvaluator<CoeffType> _thermo_evaluator;
@@ -96,11 +93,9 @@ namespace Antioch
   ( const ReactionSet<CoeffType>& reaction_set,
     const CEAThermoMixture<CoeffType>& thermo,
     StirredReactorTimeIntegratorBase<CoeffType,StateType>& time_integrator,
-    const StateType example,
-    CoeffType volume )
+    const StateType example )
     : _reactor_type(ReactorType::INVALID),
       _time_integrator(time_integrator),
-      _volume(volume),
       _kinetics_evaluator(reaction_set,example),
       _thermo_evaluator(thermo)
   {
