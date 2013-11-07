@@ -139,6 +139,7 @@ namespace Antioch
       {
       case( ReactorType::ISOTHERMAL ):
         {
+          /*! \todo Replace with an antioch_cast */
           (*(static_cast<IsothermalStirredReactor<CoeffType,StateType>* >(this)))( x, dx_dt );
         }
         break;
