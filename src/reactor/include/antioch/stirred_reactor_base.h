@@ -40,6 +40,9 @@ namespace Antioch
   class IsothermalStirredReactor;
 
   template<typename CoeffType, typename StateType>
+  class IsothermalIsobaricStirredReactor;
+
+  template<typename CoeffType, typename StateType>
   class StirredReactorTimeIntegratorBase;
   
   template<typename CoeffType=double, typename StateType=CoeffType>
@@ -136,6 +139,13 @@ namespace Antioch
         {
           /*! \todo Replace with an antioch_cast */
           (*(static_cast<IsothermalStirredReactor<CoeffType,StateType>* >(this)))( x, dx_dt );
+        }
+        break;
+
+      case( ReactorType::ISOTHERMAL_ISOBARIC ):
+        {
+          /*! \todo Replace with an antioch_cast */
+          (*(static_cast<IsothermalIsobaricStirredReactor<CoeffType,StateType>* >(this)))( x, dx_dt );
         }
         break;
 
