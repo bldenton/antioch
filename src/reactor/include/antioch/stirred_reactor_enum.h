@@ -29,7 +29,8 @@ namespace Antioch
   namespace ReactorType
   {
     enum ReactorType{ INVALID = 0,
-                      ISOTHERMAL };
+                      ISOTHERMAL,
+                      ISOTHERMAL_ISOBARIC };
   }
 
   namespace TimeIntegratorType
