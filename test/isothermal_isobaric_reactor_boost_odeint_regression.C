@@ -1,0 +1,134 @@
+//-----------------------------------------------------------------------bl-
+//--------------------------------------------------------------------------
+//
+// Antioch - A Gas Dynamics Thermochemistry Library
+//
+// Copyright (C) 2013 The PECOS Development Team
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the Version 2.1 GNU Lesser General
+// Public License as published by the Free Software Foundation.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc. 51 Franklin Street, Fifth Floor,
+// Boston, MA  02110-1301  USA
+//
+//-----------------------------------------------------------------------el-
+
+#include "antioch_config.h"
+
+// C++
+#include <limits>
+#include <string>
+#include <vector>
+
+// Antioch
+#include "antioch/vector_utils.h"
+
+#include "antioch/antioch_asserts.h"
+#include "antioch/chemical_species.h"
+#include "antioch/chemical_mixture.h"
+#include "antioch/reaction_set.h"
+#include "antioch/read_reaction_set_data_xml.h"
+#include "antioch/cea_mixture.h"
+#include "antioch/cea_mixture_ascii_parsing.h"
+#include "antioch/stirred_reactor_enum.h"
+#include "antioch/isothermal_isobaric_stirred_reactor.h"
+#include "antioch/stirred_reactor_observer.h"
+#include "antioch/stirred_reactor_data.h"
+#include "antioch/boost_ode_integrator.h"
+
+#ifdef ANTIOCH_HAVE_BOOST_ODEINT
+template <typename Scalar>
+int tester(const std::string& input_name)
+{
+  using std::abs;
+
+  std::vector<std::string> species_str_list;
+  const unsigned int n_species = 5;
+  species_str_list.reserve(n_species);
+  species_str_list.push_back( "N2" );
+  species_str_list.push_back( "O2" );
+  species_str_list.push_back( "N" );
+  species_str_list.push_back( "O" );
+  species_str_list.push_back( "NO" );
+
+  Antioch::ChemicalMixture<Scalar> chem_mixture( species_str_list );
+  Antioch::ReactionSet<Scalar> reaction_set( chem_mixture );
+  Antioch::CEAThermoMixture<Scalar> thermo( chem_mixture );
+
+  Antioch::read_cea_mixture_data_ascii_default( thermo );
+  Antioch::read_reaction_set_data_xml<Scalar>( input_name, false, reaction_set );
+
+  const Scalar T = 1000;
+
+  const Scalar P = 100000;
+
+  
+
+  int return_flag = 0;
+
+  Antioch::BoostStepperType::BoostStepperType stepper_type = Antioch::BoostStepperType::RUNGE_KUTTA_4;
+  //Antioch::BoostStepperType::BoostStepperType stepper_type = Antioch::BoostStepperType::RUNGE_KUTTA_CASH_KARP_54;
+  //Antioch::BoostStepperType::BoostStepperType stepper_type = Antioch::BoostStepperType::RUNGE_KUTTA_DORMAND_PRINCE_5;
+  //Antioch::BoostStepperType::BoostStepperType stepper_type = Antioch::BoostStepperType::RUNGE_KUTTA_FEHLBERG_78;
+
+  Antioch::BoostODEIntegrator<Scalar,Scalar> integrator( stepper_type );
+
+  Antioch::IsothermalIsobaricStirredReactor<Scalar,Scalar> reactor( T, reaction_set, thermo, integrator, 0.0 /*example*/, 1000.0 );
+
+  std::vector<Scalar> x0(n_species, 0.0);
+  x0[0] = 0.2;
+  x0[1] = 0.4;
+  x0[2] = 0.2;
+  x0[3] = 0.2;
+  x0[4] = 0.0;
+
+  std::vector<double> time_hist;
+
+  std::vector<std::vector<double> > x_hist;
+
+  Antioch::StirredReactorData<Scalar,std::vector<Scalar> > data( reaction_set, 1000 );
+
+  Antioch::StirredReactorObserver<Scalar,std::vector<Scalar> > observer( data );
+
+  reactor.run( x0, 0.0, 1.0e-7, 1.0e-12, observer );
+
+  data.output_ascii( std::cout );
+
+  return return_flag;
+}
+
+int main(int argc, char* argv[])
+{
+  // Check command line count.
+  if( argc < 2 )
+    {
+      // TODO: Need more consistent error handling.
+      std::cerr << "Error: Must specify reaction set XML input file." << std::endl;
+      antioch_error();
+    }
+
+  int return_flag = 0;
+
+  return_flag = tester<double>(std::string(argv[1]));
+
+  return return_flag;
+}
+
+#else // ANTIOCH_HAVE_BOOST_ODEINT
+
+int main()
+{
+  /* If Antioch was compiled without Boost ODEInt, then tell Automake
+     we're skipping this test. */
+  return 77;
+}
+
+#endif // ANTIOCH_HAVE_BOOST_ODEINT 

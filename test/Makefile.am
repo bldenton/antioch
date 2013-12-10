@@ -50,6 +50,7 @@ check_PROGRAMS += units_unit
 check_PROGRAMS += kinetics_reactive_scheme_unit
 check_PROGRAMS += sigma_bin_converter_unit
 check_PROGRAMS += isothermal_reactor_boost_odeint_regression
+check_PROGRAMS += isothermal_isobaric_reactor_boost_odeint_regression
 
 if ANTIOCH_ENABLE_EIGEN
 check_PROGRAMS += stat_mech_thermo_unit_eigen
@@ -121,6 +122,7 @@ units_unit_SOURCES = units_unit.C
 kinetics_reactive_scheme_unit_SOURCES = kinetics_reactive_scheme_unit.C
 sigma_bin_converter_unit_SOURCES = sigma_bin_converter_unit.C
 isothermal_reactor_boost_odeint_regression_SOURCES = isothermal_reactor_boost_odeint_regression.C
+isothermal_isobaric_reactor_boost_odeint_regression_SOURCES = isothermal_isobaric_reactor_boost_odeint_regression.C
 
 if ANTIOCH_ENABLE_EIGEN
 stat_mech_thermo_unit_eigen_SOURCES = stat_mech_thermo_unit_eigen.C
@@ -177,6 +179,7 @@ TESTS += units_unit
 TESTS += kinetics_reactive_scheme_unit.sh
 TESTS += sigma_bin_converter_unit.sh
 TESTS += isothermal_reactor_boost_odeint_regression_air_5sp.sh
+TESTS += isothermal_isobaric_reactor_boost_odeint_regression_air_5sp.sh
 
 if ANTIOCH_ENABLE_EIGEN
 TESTS += stat_mech_thermo_unit_eigen

@@ -216,6 +216,8 @@ AC_CONFIG_FILES(test/kinetics_reactive_scheme_unit.sh,   [chmod +x test/kinetics
 
 AC_CONFIG_FILES(test/isothermal_reactor_boost_odeint_regression_air_5sp.sh,
                 [chmod +x test/isothermal_reactor_boost_odeint_regression_air_5sp.sh])
+AC_CONFIG_FILES(test/isothermal_isobaric_reactor_boost_odeint_regression_air_5sp.sh,
+                [chmod +x test/isothermal_isobaric_reactor_boost_odeint_regression_air_5sp.sh])
 
 dnl-----------------------------------------------
 dnl Generate header files
