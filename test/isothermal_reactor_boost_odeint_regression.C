@@ -40,6 +40,7 @@
 #include "antioch/cea_mixture_ascii_parsing.h"
 #include "antioch/stirred_reactor_enum.h"
 #include "antioch/isothermal_stirred_reactor.h"
+#include "antioch/isothermal_isobaric_stirred_reactor.h"
 #include "antioch/stirred_reactor_observer.h"
 #include "antioch/stirred_reactor_data.h"
 #include "antioch/boost_ode_integrator.h"
