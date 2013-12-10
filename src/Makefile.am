@@ -70,6 +70,7 @@ pkginclude_HEADERS += parsing/include/antioch/chemkin_parser.h
 # reactor
 pkginclude_HEADERS += reactor/include/antioch/boost_ode_integrator.h
 pkginclude_HEADERS += reactor/include/antioch/isothermal_stirred_reactor.h
+pkginclude_HEADERS += reactor/include/antioch/isothermal_isobaric_stirred_reactor.h
 pkginclude_HEADERS += reactor/include/antioch/stirred_reactor_base.h
 pkginclude_HEADERS += reactor/include/antioch/stirred_reactor_time_integrator_base.h
 
