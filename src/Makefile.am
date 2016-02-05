@@ -4,6 +4,7 @@
 #----------------------------------------
 
 bin_PROGRAMS    = antioch_version
+bin_PROGRAMS   += kinetic_rates
 
 lib_LTLIBRARIES = libantioch.la
 
@@ -204,6 +205,10 @@ pkginclude_HEADERS += $(top_builddir)/src/utilities/include/antioch/antioch_vers
 # Version app
 antioch_version_SOURCES = apps/version.C
 antioch_version_LDADD = libantioch.la
+
+# kinetic rates app
+kinetic_rates_SOURCES = apps/kinetic_rates.C
+kinetic_rates_LDADD = libantioch.la
 
 #--------------------------------------
 #Local Directories to include for build
