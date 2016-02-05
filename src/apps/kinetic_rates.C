@@ -47,9 +47,9 @@ int main( int argc, char* argv[] )
 
   Antioch::ChemKinParser<double> kinetics_parser( kinetics_filename, true );
   //Antioch::XMLParser<double> kinetics_parser( kinetics_filename, false );
-  kinetics_parser.initialize();
 
   std::vector<std::string> species_names = kinetics_parser.species_list();
+  kinetics_parser.initialize();
 
   Antioch::ChemicalMixture<double> chem_mixture( species_names,
                                                  false,
@@ -60,7 +60,7 @@ int main( int argc, char* argv[] )
   Antioch::read_reaction_set_data_chemkin<double>( kinetics_filename, true, reaction_set );
   ///Antioch::read_reaction_set_data_xml<double>( kinetics_filename, false, reaction_set );
 
-  Antioch::NASAThermoMixture<double,Antioch::NASA9CurveFit<double> > thermo_mix( chem_mixture );
+  Antioch::NASAThermoMixture<double,Antioch::NASA7CurveFit<double> > thermo_mix( chem_mixture );
 
   Antioch::read_nasa_mixture_data( thermo_mix,
                                    thermo_data_filename,
@@ -68,7 +68,7 @@ int main( int argc, char* argv[] )
                                    //Antioch::XML,
                                    true );
 
-  Antioch::NASAEvaluator<double,Antioch::NASA9CurveFit<double> > thermo( thermo_mix );
+  Antioch::NASAEvaluator<double,Antioch::NASA7CurveFit<double> > thermo( thermo_mix );
 
   const double T = 1500.0; // K
   const double P = 1.0e5; // Pa
@@ -78,9 +78,9 @@ int main( int argc, char* argv[] )
 
   // Mass fractions
   std::vector<double> Y(n_species,0.0);
-  Y[0] = 0.2;
-  Y[1] = 0.8;
-
+  Y[3] = 0.2;
+  Y[56] = 0.79;
+  Y[14] = 0.01;
   const double R_mix = chem_mixture.R(Y); // get R_tot in J.kg-1.K-1
 
   const double rho = P/(R_mix*T); // kg.m-3
@@ -99,5 +99,7 @@ int main( int argc, char* argv[] )
 
   kinetics.compute_mass_sources( T , molar_densities, h_RT_minus_s_R, omega_dot);
 
+  for( int s = 0; s < n_species; s++ )
+     std::cout << "\dot{Y}_{" << species_names[s] << "} = " << omega_dot[s] << std::endl;
   return 0;
 }
